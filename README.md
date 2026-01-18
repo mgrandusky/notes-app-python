@@ -311,6 +311,9 @@ notes-app/
 - **Secure Sessions**: HTTPOnly, Secure, and SameSite cookies
 - **Password Hashing**: Not applicable (OAuth only)
 - **Environment Variables**: Sensitive data kept out of code
+- **Updated Dependencies**: All security vulnerabilities patched
+  - Authlib >= 1.6.5 (patches CVE-2024-37568, CVE-2024-26152, algorithm confusion)
+  - Gunicorn >= 22.0.0 (patches HTTP request smuggling vulnerabilities)
 
 ## 🧪 API Endpoints
 
