@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}My Notes - Notes App{% endblock %}
+
+{% block content %}
+<div class="notes-container">
+    <div class="notes-header">
+        <h1>My Notes</h1>
+        <a href="{{ url_for('notes.new_note') }}" class="btn btn-primary">+ New Note</a>
+    </div>
+    
+    <!-- Search and Filter -->
+    <div class="notes-controls">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search notes..." class="form-input">
+        </div>
+        
+        <div class="filter-controls">
+            <select id="sort-select" class="form-select">
+                <option value="updated_at">Last Updated</option>
+                <option value="created_at">Date Created</option>
+                <option value="title">Title</option>
+            </select>
+            
+            <select id="order-select" class="form-select">
+                <option value="desc">Descending</option>
+                <option value="asc">Ascending</option>
+            </select>
+            
+            <label class="checkbox-label">
+                <input type="checkbox" id="archived-toggle">
+                Show Archived
+            </label>
+        </div>
+    </div>
+    
+    <!-- Tags Filter -->
+    <div class="tags-filter" id="tags-filter">
+        <span class="tags-label">Filter by tag:</span>
+        <button class="tag-filter active" data-tag="">All</button>
+    </div>
+    
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading notes...</p>
+    </div>
+    
+    <!-- Notes Grid -->
+    <div id="notes-grid" class="notes-grid">
+        <!-- Notes will be loaded here via JavaScript -->
+    </div>
+    
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">📝</div>
+        <h2>No notes yet</h2>
+        <p>Create your first note to get started!</p>
+        <a href="{{ url_for('notes.new_note') }}" class="btn btn-primary">Create Note</a>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h2>Delete Note</h2>
+        <p>Are you sure you want to delete this note? This action cannot be undone.</p>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notes.js') }}"></script>
+{% endblock %}

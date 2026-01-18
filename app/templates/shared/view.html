@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}{{ note.title }} - Shared Note{% endblock %}
+
+{% block content %}
+<div class="note-view-container">
+    <div class="shared-badge">
+        <span>🔗 Shared with you by {{ note.author.username }}</span>
+    </div>
+    
+    <div class="note-view-header">
+        <h1 class="note-title">{{ note.title }}</h1>
+        {% if share and share.permission_level == 'edit' %}
+            <div class="note-actions">
+                <a href="{{ url_for('notes.edit_note', note_id=note.id) }}" class="btn btn-secondary">Edit</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="note-meta">
+        <span class="note-date">Created: {{ note.created_at.strftime('%B %d, %Y at %I:%M %p') }}</span>
+        <span class="note-date">Updated: {{ note.updated_at.strftime('%B %d, %Y at %I:%M %p') }}</span>
+        {% if note.tags %}
+            <div class="note-tags">
+                {% for tag in note.get_tags() %}
+                    <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if share %}
+            <span class="permission-badge">Permission: {{ share.permission_level|capitalize }}</span>
+        {% endif %}
+    </div>
+    
+    <div class="note-content-view">
+        {{ note.content|safe }}
+    </div>
+</div>
+{% endblock %}

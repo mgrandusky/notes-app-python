@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ note.title }} - Public Note</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="{{ url_for('index') }}" class="navbar-logo">
+                    📝 Notes App
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <a href="{{ url_for('auth.login') }}" class="navbar-item">Sign In</a>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="main-content">
+        <div class="container">
+            <div class="note-view-container">
+                <div class="shared-badge public">
+                    <span>🌐 Public Shared Note</span>
+                </div>
+                
+                <div class="note-view-header">
+                    <h1 class="note-title">{{ note.title }}</h1>
+                </div>
+                
+                <div class="note-meta">
+                    <span class="note-date">Created: {{ note.created_at.strftime('%B %d, %Y') }}</span>
+                    {% if note.tags %}
+                        <div class="note-tags">
+                            {% for tag in note.get_tags() %}
+                                <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="note-content-view">
+                    {{ note.content|safe }}
+                </div>
+                
+                <div class="public-note-cta">
+                    <p>Create your own notes with Notes App</p>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Notes App. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
