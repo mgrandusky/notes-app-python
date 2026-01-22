@@ -26,12 +26,7 @@ This guide explains how to run the Notes App using Docker and Docker Compose.
    docker-compose up -d
    ```
 
-4. **Initialize the database**:
-   ```bash
-   docker-compose exec web flask db upgrade
-   ```
-
-5. **Access the application**:
+4. **Access the application**:
    - Open your browser to http://localhost:5000
 
 ## Docker Commands
@@ -51,9 +46,14 @@ docker-compose down
 docker-compose logs -f web
 ```
 
-### Run database migrations
+### Initialize database (if needed)
+The database tables are automatically created on first run. To manually trigger:
 ```bash
-docker-compose exec web flask db upgrade
+docker-compose exec web flask shell
+>>> from app import create_app, db
+>>> app = create_app()
+>>> with app.app_context():
+...     db.create_all()
 ```
 
 ### Access the Flask shell
@@ -104,12 +104,16 @@ services:
 
 For production:
 
-1. Set strong `SECRET_KEY` in `.env`
-2. Configure proper email settings
-3. Set up OAuth credentials (if using)
-4. Use a managed PostgreSQL database (optional)
-5. Set up a reverse proxy (nginx) in front of the Flask app
-6. Enable HTTPS
+1. **Change default credentials**: Update database credentials in `docker-compose.yml` or use `docker-compose.override.yml`
+2. Set strong `SECRET_KEY` in `.env` (generate with `python -c "import secrets; print(secrets.token_hex(32))"`)
+3. Configure proper email settings
+4. Set up OAuth credentials (if using)
+5. Use a managed PostgreSQL database (recommended)
+6. Set up a reverse proxy (nginx) in front of the Flask app
+7. Enable HTTPS
+8. Remove or restrict volume mounts to prevent exposing sensitive files
+
+**Security Note**: The default `docker-compose.yml` uses hard-coded database credentials suitable for development only. For production, create a `docker-compose.override.yml` with secure credentials or use environment variables.
 
 ## Troubleshooting
 
